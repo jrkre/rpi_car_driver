@@ -33,4 +33,3 @@ if __name__=='__main__':
     buzzer=Buzzer()
     rospy.Subscriber('/buzzer', Bool, callback)
     rospy.spin()
-    

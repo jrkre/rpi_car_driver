@@ -6,7 +6,7 @@
 <!-- <node pkg="rpi_car_driver" name="motor_driver" type="motor_driver.py" output="screen">
 </node> -->
 
-    <node pkg="rpi_car_driver" name="rgb_controller" type="rgb_controller.py" output="screen">
+    <node pkg="rpi_car_driver" name="rgb_controller" type="rgb_controller.py" output="screen" launch-prefix-"sudo">
     </node>
 
     <node pkg="rpi_car_driver" name="voltage_monitor" type="voltage_monitor.py" output="screen">
