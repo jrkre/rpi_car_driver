@@ -32,4 +32,5 @@ if __name__=='__main__':
     rospy.init_node('buzzer_driver', anonymous=True)
     buzzer=Buzzer()
     rospy.Subscriber('/buzzer', Bool, callback)
+    rospy.spin()
     
