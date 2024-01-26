@@ -1,0 +1,19 @@
+<launch>
+    <node pkg="rpi_car_driver" name="buzzer_driver" type="buzzer_driver.py" output="screen">
+        <param name="buzzer_pin" value="17"/>
+    </node>
+
+<!-- <node pkg="rpi_car_driver" name="motor_driver" type="motor_driver.py" output="screen">
+</node> -->
+
+    <node pkg="rpi_car_driver" name="rgb_controller" type="rgb_controller.py" output="screen">
+    </node>
+
+    <node pkg="rpi_car_driver" name="voltage_monitor" type="voltage_monitor.py" output="screen">
+    </node>
+
+    <node pkg="rpi_car_driver" name="ultrasonic_driver" type="ultrasonic_driver.py" output="screen">
+        <param name="trig_pin" value="23"/>
+        <param name="echo_pin" value="24"/>
+    </node>
+</launch>
