@@ -6,7 +6,6 @@ import time
 import rospy
 from std_msgs.msg import Bool
 import RPi.GPIO as GPIO
-from Command import COMMAND as cmd
 
 
 buzzer = None

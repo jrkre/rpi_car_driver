@@ -44,7 +44,7 @@ class Adc:
             value1 = self.analogReadPCF8591(channel)   #read the ADC value of channel 0,1,2,
             value2 = self.analogReadPCF8591(channel)
             if value1==value2:
-                break;
+                break
         voltage = value1 / 256.0 * 3.3  #calculate the voltage value
         voltage = round(voltage,2)
         return voltage
