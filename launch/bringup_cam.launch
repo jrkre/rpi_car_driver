@@ -12,10 +12,10 @@
     <node pkg="rpi_car_driver" name="voltage_monitor" type="voltage_monitor.py" output="screen">
     </node>
 
-    <node pkg="rpi_car_driver" name="ultrasonic_driver" type="ultrasonic_driver.py" output="screen">
+    <!-- <node pkg="rpi_car_driver" name="ultrasonic_driver" type="ultrasonic_driver.py" output="screen">
         <param name="trig_pin" value="23"/>
         <param name="echo_pin" value="24"/>
-    </node>
+    </node> -->
 
     <node pkg="raspicam" name="camera_driver" type="camera_driver.py" output="screen">
         <!-- <param name="camera_topic" value="/camera/image_raw"/> -->
