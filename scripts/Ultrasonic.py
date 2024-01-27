@@ -2,10 +2,10 @@
 
 from sensor_msgs.msg import Range
 import time
-from Motor import *
+from . import Motor
 import RPi.GPIO as GPIO
-from servo import *
-from PCA9685 import PCA9685
+# from servo import *
+from . import PCA9685
 
 
 class Ultrasonic:
