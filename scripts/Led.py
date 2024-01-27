@@ -129,7 +129,7 @@ led=Led()
 
 def callback(msg):
     global led
-    led.colorWipe(Color(msg.r,msg.g,msg.b))
+    led.colorWipe(Color(msg.r,msg.g,msg.b))d
     
 
 # Main program logic follows:
