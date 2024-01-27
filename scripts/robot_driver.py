@@ -18,6 +18,7 @@ led_sub = None
 
 def cmd_vel_callback(msg):
     #do motor stuff
+    print("cmd_vel_callback")
     
 
 def buzzer_callback(msg):
