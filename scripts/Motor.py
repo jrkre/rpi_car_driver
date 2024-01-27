@@ -4,9 +4,9 @@
 
 import math
 import rospy
-from PCA9685 import PCA9685
+import PCA9685
 from geometry_msgs.msg import Twist
-from ADC import *
+import Adc
 import time
 
 
