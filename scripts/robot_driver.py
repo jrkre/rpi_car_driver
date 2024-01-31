@@ -7,7 +7,7 @@ from geometry_msgs.msg import Twist
 from std_msgs.msg import Int32
 from std_msgs.msg import Bool
 from std_msgs.msg import ColorRGBA
-import Adc, Ultrasonic, Buzzer, Led, Servo
+import Adc, Ultrasonic, Buzzer, Servo #, Led
 
 
 voltage_pub = None
@@ -16,7 +16,7 @@ ultrasonic_pub = None
 servo_sub = None
 buzzer_sub = None
 cmd_vel_sub = None
-led_sub = None
+# led_sub = None
 
 
 def servo_callback(msg):
@@ -41,10 +41,10 @@ def buzzer_callback(msg):
     else:
         buzzer.run("0")
 
-def led_callback(msg):
-    #do led stuff
-    led = Led()
-    led.colorWipe(msg.r, msg.g, msg.b, msg.a)
+# def led_callback(msg):
+#     #do led stuff
+#     led = Led()
+#     led.colorWipe(msg.r, msg.g, msg.b, msg.a)
     
 def update_sensors():
     global voltage_pub, ultrasonic_pub
@@ -65,9 +65,16 @@ def update_sensors():
     ultrasonic_msg.header.stamp = rospy.Time.now()
     ultrasonic_pub.publish(ultrasonic_msg)
     
+def main():
+    while not rospy.is_shutdown():
+        update_sensors()
+        rospy.sleep(0.1)
 
 if "___main__" == __name__:
     rospy.init_node('robot_driver', anonymous=True)
+    rospy.Rate(10)
+    
+    print ('Program is starting ... ')
     
     voltage_pub = rospy.Publisher('/battery_state', BatteryState, queue_size=10)
     ultrasonic_pub = rospy.Publisher('/ultrasonic', Range, queue_size=10)
@@ -75,8 +82,6 @@ if "___main__" == __name__:
     servo_sub = rospy.Subscriber('/servo', Int32, servo_callback)
     buzzer_sub = rospy.Subscriber('/buzzer', Bool, buzzer_callback)
     cmd_vel_sub = rospy.Subscriber('/cmd_vel', Twist, cmd_vel_callback)
-    led_sub = rospy.Subscriber('/led', ColorRGBA, led_callback)
+    # led_sub = rospy.Subscriber('/led', ColorRGBA, led_callback)
     
-    update_sensors()
-    
-    rospy.spin()
+    main()
