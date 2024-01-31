@@ -4,16 +4,27 @@ import rospy
 from sensor_msgs.msg import Range
 from sensor_msgs.msg import BatteryState
 from geometry_msgs.msg import Twist
+from std_msgs.msg import Int32
 from std_msgs.msg import Bool
 from std_msgs.msg import ColorRGBA
-import Adc, Ultrasonic, Motor, Buzzer, Led
+import Adc, Ultrasonic, Buzzer, Led, Servo
 
 
-cmd_vel_sub = None
 voltage_pub = None
 ultrasonic_pub = None
+
+servo_sub = None
 buzzer_sub = None
+cmd_vel_sub = None
 led_sub = None
+
+
+def servo_callback(msg):
+    #do servo stuff
+    print("servo_callback")
+    servo = Servo()
+    
+    servo.setServoPwm('0', msg.data)
 
 
 def cmd_vel_callback(msg):
@@ -36,20 +47,34 @@ def led_callback(msg):
     led.colorWipe(msg.r, msg.g, msg.b, msg.a)
     
 def update_sensors():
+    global voltage_pub, ultrasonic_pub
     adc = Adc()
     ultrasonic = Ultrasonic()
     
     voltage = adc.recvADC(2)*3
-    ultrasonic_m = ultrasonic.get_distance()
+    ultrasonic_m = ultrasonic.get_distance() * 0.01
+    
+    voltage_msg = BatteryState()
+    voltage_msg.voltage = voltage
+    voltage_msg.percentage = voltage/8.4
+    voltage_msg.header.stamp = rospy.Time.now()
+    voltage_pub.publish(voltage_msg)
+    
+    ultrasonic_msg = Range()
+    ultrasonic_msg.range = ultrasonic_m
+    ultrasonic_msg.header.stamp = rospy.Time.now()
+    ultrasonic_pub.publish(ultrasonic_msg)
     
 
 if "___main__" == __name__:
     rospy.init_node('robot_driver', anonymous=True)
     
-    cmd_vel_sub = rospy.Subscriber('/cmd_vel', Twist, cmd_vel_callback)
     voltage_pub = rospy.Publisher('/battery_state', BatteryState, queue_size=10)
     ultrasonic_pub = rospy.Publisher('/ultrasonic', Range, queue_size=10)
+    
+    servo_sub = rospy.Subscriber('/servo', Int32, servo_callback)
     buzzer_sub = rospy.Subscriber('/buzzer', Bool, buzzer_callback)
+    cmd_vel_sub = rospy.Subscriber('/cmd_vel', Twist, cmd_vel_callback)
     led_sub = rospy.Subscriber('/led', ColorRGBA, led_callback)
     
     update_sensors()
