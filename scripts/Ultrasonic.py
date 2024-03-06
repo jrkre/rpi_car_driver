@@ -40,7 +40,7 @@ class Ultrasonic:
             GPIO.output(self.trigger_pin, GPIO.LOW)  # make trigger_pin output LOW level
             pingTime = self.pulseIn(self.echo_pin, GPIO.HIGH, self.timeOut)  # read plus time of echo_pin
             distance_cm[i] = pingTime * 340.0 / 2.0 / 10000.0  # calculate distance with sound speed 340m/s
-            print(distance_cm[i])
+            #print(distance_cm[i])
         distance_cm = sorted(distance_cm)
         return int(distance_cm[2])
 

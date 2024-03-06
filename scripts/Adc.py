@@ -29,6 +29,7 @@ class Adc:
                 self.Index="PCF8591"
             else:
                 self.Index="ADS7830" 
+        
     def analogReadPCF8591(self,chn):#PCF8591 read ADC value,chn:0,1,2,3
         value=[0,0,0,0,0,0,0,0,0]
         for i in range(9):
