@@ -149,8 +149,8 @@ def loop():
     
     PWM = Motor()
     
-    WHEEL_GEOMETRY = (rospy.param('/robot/wheel/separation/horizontal') + rospy.param('/robot/wheel/separation/vertical')) / 2
-    WHEEL_RADIUS = rospy.param('/robot/wheel/diameter') / 2
+    WHEEL_GEOMETRY = (rospy.get_param('/robot/wheel/separation/horizontal') + rospy.get_param('/robot/wheel/separation/vertical')) / 2
+    WHEEL_RADIUS = rospy.get_param('/robot/wheel/diameter') / 2
 
     while True:
         try:
