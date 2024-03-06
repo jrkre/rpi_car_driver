@@ -1,4 +1,4 @@
-# !/usr/bin/env python3
+#!/usr/bin/env python3
 
 from sensor_msgs.msg import Range
 import time
@@ -128,7 +128,7 @@ ultrasonic = Ultrasonic()
     
 def publisher():
     global ultrasonic
-    rospy.init_node('/ultrasonic', anonymous=True)
+    rospy.init_node('ultrasonic_driver', anonymous=True)
     pub = rospy.Publisher('/ultrasonic', Range, queue_size=10)
     rate = rospy.Rate(10)  # 10hz
     while not rospy.is_shutdown():

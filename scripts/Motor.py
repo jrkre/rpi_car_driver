@@ -4,7 +4,7 @@
 
 import math
 import rospy
-import PCA9685
+from PCA9685 import PCA9685
 from geometry_msgs.msg import Twist
 import Adc
 import time
@@ -113,8 +113,8 @@ class Motor:
             angle -= 5
 
 
-PWM = Motor()
 
+PWM = None
 WHEEL_GEOMETRY = None
 WHEEL_RADIUS = None
 
@@ -143,9 +143,11 @@ def cmd_vel_callback(msg):
     
 
 def loop():
-    global WHEEL_RADIUS, WHEEL_GEOMETRY
-    rospy.init_node('motor', anonymous=True)
+    global WHEEL_RADIUS, WHEEL_GEOMETRY, PWM
+    rospy.init_node('motor_controller', anonymous=True)
     rospy.Rate(10)
+    
+    PWM = Motor()
     
     WHEEL_GEOMETRY = (rospy.param('/robot/wheel/separation/horizontal') + rospy.param('/robot/wheel/separation/vertical')) / 2
     WHEEL_RADIUS = rospy.param('/robot/wheel/diameter') / 2

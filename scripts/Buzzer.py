@@ -30,7 +30,7 @@ def callback(msg):
             
 if __name__=='__main__':
     rospy.init_node('buzzer_driver', anonymous=True)
-    Buzzer_Pin = rospy.get_param('/buzzer_pin')
+    Buzzer_Pin = rospy.get_param('/buzzer_driver/buzzer_pin')
     buzzer=Buzzer()
     rospy.Subscriber('/buzzer', Bool, callback)
     rospy.spin()

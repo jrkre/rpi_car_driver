@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from PCA9685 import PCA9685
 import rospy
 from std_msgs.msg import Int32
@@ -49,7 +51,7 @@ def servo_y_callback(msg):
 
 # Main program logic follows:
 if __name__ == '__main__':
-    rospy.init_node('servo', anonymous=True)
+    rospy.init_node('servo_controller', anonymous=True)
     rospy.Rate(10)
     
     while True:
