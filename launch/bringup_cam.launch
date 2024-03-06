@@ -2,6 +2,7 @@
     <node pkg="rpi_car_driver" name="buzzer_driver" type="Buzzer.py" output="screen">
         <param name="buzzer_pin" value="17"/>
     </node>
+    <rosparam command="load" file="$(find rpi_car_driver)/config/robot.yaml" />
 
     <!-- <node pkg="rpi_car_driver" name="motor_driver" type="motor_driver.py" output="screen">
     </node> -->
