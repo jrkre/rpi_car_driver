@@ -2,6 +2,7 @@
 
 import rospy
 from std_msgs.msg import ColorRGBA
+import Color
 import time
 from rpi_ws281x import *
 # LED strip configuration:

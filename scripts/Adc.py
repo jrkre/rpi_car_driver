@@ -79,12 +79,16 @@ def loop():
         battery_state.header.stamp = rospy.Time.now()
         battery_state.voltage = voltage
         pub.publish(battery_state)
-        time.sleep(0.1)
+        
+        
 def destroy():
     pass
+
+
 # Main program logic follows:
 if __name__ == '__main__':
     rospy.init_node('voltage_monitor', anonymous=True)
+    rospy.Rate(10)
     
     pub = rospy.Publisher('/battery_state', BatteryState, queue_size=10)
     
@@ -92,3 +96,5 @@ if __name__ == '__main__':
         loop()
     except KeyboardInterrupt:  # When 'Ctrl+C' is pressed, the child program destroy() will be  executed.
         destroy()
+    except rospy.ROSInterruptException:
+        pass

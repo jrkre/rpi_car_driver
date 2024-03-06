@@ -10,7 +10,7 @@ import RPi.GPIO as GPIO
 
 buzzer = None
 GPIO.setwarnings(False)
-Buzzer_Pin = 17
+Buzzer_Pin = None
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(Buzzer_Pin,GPIO.OUT)
 
@@ -30,6 +30,7 @@ def callback(msg):
             
 if __name__=='__main__':
     rospy.init_node('buzzer_driver', anonymous=True)
+    Buzzer_Pin = rospy.get_param('/buzzer_pin')
     buzzer=Buzzer()
     rospy.Subscriber('/buzzer', Bool, callback)
     rospy.spin()

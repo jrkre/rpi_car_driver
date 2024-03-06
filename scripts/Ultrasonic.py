@@ -2,6 +2,7 @@
 
 from sensor_msgs.msg import Range
 import time
+import rospy
 # import Motor
 import RPi.GPIO as GPIO
 # from servo import *
@@ -121,14 +122,29 @@ class Ultrasonic:
     #             else:
     #                 R = self.get_distance()
     #             self.run_motor(L, M, R)
+    
 
+ultrasonic = Ultrasonic()
+    
+def publisher():
+    global ultrasonic
+    rospy.init_node('/ultrasonic', anonymous=True)
+    pub = rospy.Publisher('/ultrasonic', Range, queue_size=10)
+    rate = rospy.Rate(10)  # 10hz
+    while not rospy.is_shutdown():
+        distance = ultrasonic.get_distance() # get the measurment in cm
+        msg = Range()
+        msg.header.stamp = rospy.Time.now()
+        msg.range = distance * 0.01 # convert to meters
+        pub.publish(msg)
+        rate.sleep()
 
-# ultrasonic = Ultrasonic()
-# # Main program logic follows:
-# if __name__ == '__main__':
-#     print('Program is starting ... ')
-#     try:
-#         # ultrasonic.run()
-#     except KeyboardInterrupt:  # When 'Ctrl+C' is pressed, the child program destroy() will be  executed.
-#         PWM.setMotorModel(0, 0, 0, 0)
-#         ultrasonic.pwm_S.setServoPwm('0', 90)
+if __name__ == '__main__':
+    print('\'/ultrasonic\' is initializing ... ')
+    try:
+        publisher()
+    except KeyboardInterrupt: 
+        PWM.setMotorModel(0, 0, 0, 0)
+        ultrasonic.pwm_S.setServoPwm('0', 90)
+    except rospy.ROSInterruptException:
+        pass

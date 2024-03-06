@@ -115,25 +115,53 @@ class Motor:
 
 PWM = Motor()
 
+WHEEL_GEOMETRY = None
+WHEEL_RADIUS = None
 
-def loop():
-    PWM.setMotorModel(2000, 2000, 2000, 2000)  # Forward
-    time.sleep(3)
-    PWM.setMotorModel(-2000, -2000, -2000, -2000)  # Back
-    time.sleep(3)
-    PWM.setMotorModel(-500, -500, 2000, 2000)  # Left
-    time.sleep(3)
-    PWM.setMotorModel(2000, 2000, -500, -500)  # Right
-    time.sleep(3)
-    PWM.setMotorModel(0, 0, 0, 0)  # Stop
+
+
 
 
 def destroy():
     PWM.setMotorModel(0, 0, 0, 0)
+    
+def cmd_vel_callback(msg):
+    global PWM
+    #do motor stuff
+    print("motor_callback")
+    x = msg.linear.x
+    y = msg.linear.y
+    rot = msg.angular.z
 
+    front_left = (x - y - rot * WHEEL_GEOMETRY) / WHEEL_RADIUS
+    front_right = (x + y + rot * WHEEL_GEOMETRY) / WHEEL_RADIUS
+    back_left = (x + y - rot * WHEEL_GEOMETRY) / WHEEL_RADIUS
+    back_right = (x - y + rot * WHEEL_GEOMETRY) / WHEEL_RADIUS
+    
+    PWM.setMotorModel(front_left, back_left, front_right, back_right)
+    
+    
+
+def loop():
+    global WHEEL_RADIUS, WHEEL_GEOMETRY
+    rospy.init_node('motor', anonymous=True)
+    rospy.Rate(10)
+    
+    WHEEL_GEOMETRY = (rospy.param('/robot/wheel/separation/horizontal') + rospy.param('/robot/wheel/separation/vertical')) / 2
+    WHEEL_RADIUS = rospy.param('/robot/wheel/diameter') / 2
+
+    while True:
+        try:
+            cmd_vel_sub = rospy.Subscriber('/cmd_vel', Twist, cmd_vel_callback)
+        except KeyboardInterrupt:
+            print("\nEnd of program")
+            
 
 if __name__ == '__main__':
     try:
         loop()
     except KeyboardInterrupt:  # When 'Ctrl+C' is pressed, the child program destroy() will be  executed.
         destroy()
+    except rospy.ROSInterruptException:
+        destroy()
+        pass

@@ -1,0 +1,6 @@
+robot:
+  wheel:
+    separation:
+      horizontal: .08
+      vertcal: .1
+    diameter: .04

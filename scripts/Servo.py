@@ -1,4 +1,6 @@
 from PCA9685 import PCA9685
+import rospy
+from std_msgs.msg import Int32
 
 
 class Servo:
@@ -28,17 +30,34 @@ class Servo:
             self.PwmServo.setServoPulse(15, 500 + int((angle + error) / 0.09))
 
 
+servo = Servo()
+
+def servo_x_callback(msg):
+    global servo
+    #do servo stuff
+    print("servo_callback")
+    
+    servo.setServoPwm('0', msg.data)
+
+def servo_y_callback(msg):
+    global servo
+    print("servo_callback")
+    
+    servo.setServoPwm('1', msg.data)
+
+
+
 # Main program logic follows:
 if __name__ == '__main__':
-    print("Now servos will rotate to 90°.")
-    print("If they have already been at 90°, nothing will be observed.")
-    print("Please keep the program running when installing the servos.")
-    print("After that, you can press ctrl-C to end the program.")
-    pwm = Servo()
+    rospy.init_node('servo', anonymous=True)
+    rospy.Rate(10)
+    
     while True:
         try:
-            pwm.setServoPwm('0', 90)
-            pwm.setServoPwm('1', 90)
+            servo_sub_x = rospy.Subscriber('/servo/x', Int32, servo_x_callback)
+            servo_sub_y = rospy.Subscriber('/servo/y', Int32, servo_y_callback)
         except KeyboardInterrupt:
             print("\nEnd of program")
             break
+        except rospy.ROSInterruptException:
+            pass
