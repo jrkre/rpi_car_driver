@@ -6,7 +6,7 @@ import math
 import rospy
 from PCA9685 import PCA9685
 from geometry_msgs.msg import Twist
-import Adc
+from Adc import Adc
 import time
 
 
