@@ -14,7 +14,7 @@
     <node pkg="rpi_car_driver" name="ultrasonic_driver" type="Ultrasonic.py" output="screen"></node>
     <node pkg="rpi_car_driver" name="motor_driver" type="Motor.py" output="screen"></node>
     <node pkg='rpi_car_driver' name='servo_controller' type='Servo.py' output='screen'></node>
-    <node pkg='rpi_car_driver' name='led_controller' type='Led.py' output='screen' launch-prefix="sudo -E"></node>
+    <node pkg='rpi_car_driver' name='led_controller' type='Led.py' output='screen' launch-prefix="sudo -SE"></node>
    
 
     <!-- <node pkg="rpi_car_driver" name="ultrasonic_driver" type="ultrasonic_driver.py" output="screen">
