@@ -1,6 +1,6 @@
 robot:
-  wheel:
-    separation:
-      horizontal: .08
-      vertical: .1
-    diameter: .04
+  wheels:
+    wheelbase:
+      horizontal: .124
+      vertical: .145
+    diameter: .066

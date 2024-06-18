@@ -188,6 +188,8 @@ include_directories(
 #   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 # )
 
+add_executable(rpi_car_driver src/firmware/main.cpp)
+
 #############
 ## Testing ##
 #############
