@@ -3,7 +3,39 @@
 
 #include "Encoder.h"
 
-void _pulse(int gpio, int level, uint32_t tick)
+Encoder::Encoder(int gpio, encoder_callback_t new_callback, int counts_per_revolution=20)
+{
+    this.gpio_pin = gpio;
+    this.callback = new_callback;
+    this.counts_per_revolution = counts_per_revolution;
+
+    //set up the gpio pin for pull up/down
+    gpioSetMode(gpio_pin, PI_INPUT);
+    gpioSetPullUpDown(gpio_pin, PI_PUD_UP);
+    gpioSetAlertFunc(gpio_pin, _pulse);
+
+    //delay for onboard r-c filter
+
+    delayMicroseconds(1000);
+    
+    encoder.register = PIN_TO_BASEREG(gpio_pin);
+    encoder.mask = PIN_TO_BITMASK(gpio_pin);
+    encoder.position = 0;
+
+    unint8_t s = 0;
+
+    if (gpioRead(gpio_pin)) s |= 1;
+    if (gpioRead(gpio_pin)) s |= 2;
+    encoder.state = s;
+}
+
+Encoder(int gpio, encoder_callback_t new_callback, int new_counts_per_revolution, bool invert=false)
+{
+    Encoder(gpio, new_callback, new_counts_per_revolution);
+    Encoder::invert = invert;
+}
+
+void Encoder::_pulse(int gpio, int level, uint32_t tick)
 {
     if(gpio == gpio_pin) level_pos = level;
 
@@ -26,35 +58,16 @@ void _pulse(int gpio, int level, uint32_t tick)
     std::cout << "Pulse:" << level << "\n" << "Callback:" << callback << std::endl;
 }
 
-Encoder::Encoder(int gpio, encoder_callback_t new_callback, int counts_per_revolution=20)
+void Encoder::update_position(int dir)
 {
-    this.gpio_pin = gpio;
-    this.callback = new_callback;
-    this.counts_per_revolution = counts_per_revolution;
+    encoder.position += dir;
+    if(encoder.position >= counts_per_revolution) encoder.position = 0;
+    if(encoder.position < 0) encoder.position = counts_per_revolution - 1;
 
-    //set up the gpio pin for pull up/down
-    gpioSetMode(gpio_pin, PI_INPUT);
-    gpioSetPullUpDown(gpio_pin, PI_PUD_UP);
-    gpioSetAlertFunc(gpio_pin, _pulse);
-
-    //delay for r-c filter
-
-    delayMicroseconds(1000);
-
-    
-    
-    encoder.register = PIN_TO_BASEREG(gpio_pin);
-    encoder.mask = PIN_TO_BITMASK(gpio_pin);
-    encoder.position = 0;
-
-    unint8_t s = 0;
-
-    if (gpioRead(gpio_pin)) s |= 1;
-    if (gpioRead(gpio_pin)) s |= 2;
-    encoder.state = s;
-
-
+    std::cout << "Position:" << encoder.position << std::endl;
 }
+
+
 
 
 void Encoder::_pulse_c(int gpio, int level, uint32_t tick, void *user)
@@ -64,4 +77,6 @@ void Encoder::_pulse_c(int gpio, int level, uint32_t tick, void *user)
 
     mySelf -> _pulse(gpio, level, tick);
 }
+
+
 

@@ -11,12 +11,6 @@ from std_msgs.msg import Int32
 from std_msgs.msg import Bool
 from std_msgs.msg import ColorRGBA
 from nav_msgs.msg import Odometry
-# import Adc, Ultrasonic, Buzzer, Servo #, Led
-# from Adc import Adc
-# from Ultrasonic import Ultrasonic
-# from Buzzer import Buzzer
-# from Servo import Servo
-# from Led import Led implementation is broken
 
 
 
@@ -31,6 +25,7 @@ class RobotBase:
     
     odom_pub = None
     velocity_sub = None
+    
     odom_quaternoion = Quaternion()
     odom_transform = TransformStamped()
     
@@ -110,25 +105,6 @@ class RobotBase:
         odom.twist.covariance[35] = 0.0001
 
         self.odom_pub.publish(odom)
-    
-    
-
-    
-
-def buzzer_callback(msg):
-    global buzzer
-    #do buzzer stuff
-    
-    
-    if (msg.data):
-        buzzer.run("1")
-    else:
-        buzzer.run("0")
-
-# def led_callback(msg):
-#     #do led stuff
-#     led = Led()
-#     led.colorWipe(msg.r, msg.g, msg.b, msg.a)
     
     
 def main():
