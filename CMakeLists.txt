@@ -18,7 +18,8 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED)
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
+find_package(pigpio REQUIRED)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -109,8 +110,8 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   INCLUDE_DIRS include include/firmware
 #  LIBRARIES pigpio
-  CATKIN_DEPENDS roscpp rospy std_msgs geometry_msgs message_runtime 
-  DEPENDS pigpio
+#  CATKIN_DEPENDS roscpp rospy std_msgs geometry_msgs message_runtime 
+#  DEPENDS pigpio
 )
 
 ###########
@@ -197,9 +198,9 @@ include_directories(
 #   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 # )
 
+set(Firmware "src/firmware/Encoder.cpp")
 
-
-add_executable(rpi_car_driver src/firmware/main.cpp)
+add_executable(rpi_car_driver src/firmware/main.cpp ${Firmware})
 
 #############
 ## Testing ##
