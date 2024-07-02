@@ -124,6 +124,7 @@ include_directories(
  include
  include/firmware
  ${catkin_INCLUDE_DIRS}
+ ${pigpio_INCLUDE_DIR}
 )
 
 ## Declare a C++ library
@@ -201,6 +202,7 @@ include_directories(
 set(Firmware "src/firmware/Encoder.cpp")
 
 add_executable(rpi_car_driver src/firmware/main.cpp ${Firmware})
+target_link_libraries(rpi_car_driver ${catkin_LIBRARIES} ${pigpio_LIBRARY} ${pigpiod_if_LIBRARY} ${pigpiod_if2_LIBRARY})
 
 #############
 ## Testing ##
