@@ -1,5 +1,9 @@
 #include "ros/ros.h"
-#include <pigpiod_if2.h>
+
+// #include <pigpio.h>
+// #include <pigpiod_if.h>
+#include "pigpiod_if2.h"
+
 #include <iostream>
 #include <unistd.h>
 #include <stdio.h>
@@ -17,7 +21,9 @@ Encoder::Encoder(int pi, int gpio, encoder_callback_t new_callback, int counts_p
     this->pi = pi;
 
     //set up the gpio pin for pull up/down
-    int result = set_mode(pi, gpio_pin, PI_INPUT);
+    set_mode(pi, gpio_pin, PI_INPUT);
+
+    int result = get_mode(pi, gpio_pin);
     if (result == 0)
     {
         ROS_INFO("GPIO mode set");

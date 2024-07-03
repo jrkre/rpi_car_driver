@@ -1,5 +1,8 @@
 #include "ros/ros.h"
-#include <pigpiod_if2.h>
+
+// #include <pigpio.h>
+// #include <pigpiod_if.h>
+#include "pigpiod_if2.h"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -27,14 +30,16 @@
 int main(int argc, char **argv)
 {
     int pi;
-    if (pi = pigpio_start(NULL, NULL) >= 0)
+    if (pi = pigpio_start(0, 0) > 0)
     {
         ROS_INFO("GPIO Initialized\n  pi: %i", pi);
     }
     else
     {
-        ROS_ERROR("GPIO FAILED TO INITIALISE");
+        ROS_ERROR("GPIO FAILED TO INITIALISE - IS pigpiod DAEMON RUNNING?");
         ROS_ERROR("%i", pi);
+
+        return 1;
     }
 
     ros::init(argc, argv, "rpi_car_firmware");
