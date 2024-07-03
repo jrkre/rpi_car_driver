@@ -1,9 +1,10 @@
+#include "ros/ros.h"
 #include <pigpio.h>
 #include <iostream>
 
 #include "Encoder.h"
 
-Encoder::Encoder(int gpio, encoder_callback_t new_callback, int counts_per_revolution=20)
+Encoder::Encoder(int gpio, encoder_callback_t new_callback, int counts_per_revolution)
 {
     this.gpio_pin = gpio;
     this.callback = new_callback;
@@ -29,7 +30,7 @@ Encoder::Encoder(int gpio, encoder_callback_t new_callback, int counts_per_revol
     encoder.state = s;
 }
 
-Encoder(int gpio, encoder_callback_t new_callback, int new_counts_per_revolution, bool invert=false)
+Encoder(int gpio, encoder_callback_t new_callback, int new_counts_per_revolution, bool invert)
 {
     Encoder(gpio, new_callback, new_counts_per_revolution);
     Encoder::invert = invert;
@@ -55,7 +56,7 @@ void Encoder::_pulse(int gpio, int level, uint32_t tick)
             }
         }
     }
-    std::cout << "Pulse:" << level << "\n" << "Callback:" << callback << std::endl;
+    // std::cout << "Pulse:" << level << "\n" << "Callback:" << callback << std::endl;
 }
 
 void Encoder::update_position(int dir)
@@ -64,7 +65,8 @@ void Encoder::update_position(int dir)
     if(encoder.position >= counts_per_revolution) encoder.position = 0;
     if(encoder.position < 0) encoder.position = counts_per_revolution - 1;
 
-    std::cout << "Position:" << encoder.position << std::endl;
+    ROS_INFO("Position: %d", encoder.position);
+    // std::cout << "Position:" << encoder.position << std::endl;
 }
 
 

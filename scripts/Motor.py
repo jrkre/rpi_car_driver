@@ -111,6 +111,23 @@ class Motor:
             print("rotating")
             time.sleep(5 * self.time_proportion * bat_compensate / 1000)
             angle -= 5
+            
+    def twist(twist):
+        #do motor stuff
+        print("motor_callback")
+        x = twist.linear.x
+        y = twist.linear.y
+        rot = twist.angular.z
+
+        front_left = (x - y - rot * WHEEL_GEOMETRY) / WHEEL_RADIUS
+        front_right = (x + y + rot * WHEEL_GEOMETRY) / WHEEL_RADIUS
+        back_left = (x + y - rot * WHEEL_GEOMETRY) / WHEEL_RADIUS
+        back_right = (x - y + rot * WHEEL_GEOMETRY) / WHEEL_RADIUS
+        
+        # probably need some value scaling in here somewhere
+
+        self.pwm.setMotorModel(front_left, back_left, front_right, back_right)
+        
 
 
 

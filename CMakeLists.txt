@@ -110,8 +110,8 @@ find_package(pigpio REQUIRED)
 catkin_package(
   INCLUDE_DIRS include include/firmware
 #  LIBRARIES pigpio
-#  CATKIN_DEPENDS roscpp rospy std_msgs geometry_msgs message_runtime 
-#  DEPENDS pigpio
+  CATKIN_DEPENDS roscpp rospy std_msgs geometry_msgs message_runtime 
+  DEPENDS pigpio
 )
 
 ###########
@@ -199,6 +199,9 @@ include_directories(
 # )
 
 set(Firmware "src/firmware/Encoder.cpp")
+
+
+target_link_libraries(rpi_car_driver ${catkin_LIBRARIES} pigpio)
 
 add_executable(rpi_car_driver src/firmware/main.cpp ${Firmware})
 

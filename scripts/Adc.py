@@ -57,7 +57,7 @@ class Adc:
             value1 = self.bus.read_byte(self.ADDRESS)
             value2 = self.bus.read_byte(self.ADDRESS)
             if value1==value2:
-                break;
+                break
         voltage = value1 / 255.0 * 3.3  #calculate the voltage value
         voltage = round(voltage,2)
         return voltage
