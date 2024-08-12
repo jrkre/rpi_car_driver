@@ -4,12 +4,13 @@ import rospy
 import time
 from std_msgs.msg import Int32, Bool, ColorRGBA
 from sensor_msgs.msg import Range, BatteryState
-import Servo, Buzzer, Led, Adc
+import Servo, Buzzer, Led, Adc, Motor
 
+#subscibers
 cmd_vel_sub = None
+
+#
 v_pub = None
-
-
 
 motor_controller = None
 servo_controller = None
@@ -41,7 +42,7 @@ if __name__ == '__main__':
     rospy.logdebug ('Program is starting ... ')
     
     #init controllers
-    #motor_controller = Motor() this doesnt compile
+    motor_controller = Motor()
     servo_controller = Servo()
     voltage_controller = Adc()
     

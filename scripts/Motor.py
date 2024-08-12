@@ -6,7 +6,6 @@ import math
 import rospy
 from PCA9685 import PCA9685
 from geometry_msgs.msg import Twist
-from Adc import Adc
 import time
 
 
@@ -17,7 +16,7 @@ class Motor:
         self.Twist = Twist()
         self.time_proportion = 2.5  # Depend on your own car,If you want to get the best out of the rotation mode,
         # change the value by experimenting.
-        self.adc = Adc()
+        #self.adc = Adc()
 
     @staticmethod
     def duty_range(duty1, duty2, duty3, duty4):
@@ -112,7 +111,7 @@ class Motor:
             time.sleep(5 * self.time_proportion * bat_compensate / 1000)
             angle -= 5
             
-    def twist(twist):
+    def twist(self, twist):
         #do motor stuff
         print("motor_callback")
         x = twist.linear.x

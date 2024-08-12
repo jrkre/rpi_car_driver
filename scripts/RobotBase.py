@@ -2,7 +2,8 @@
 
 import rospy
 import math
-from rospy import tf2 as tf
+import tf2_ros as tf
+from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Range
 from sensor_msgs.msg import BatteryState
 from geometry_msgs.msg import Quaternion
@@ -106,26 +107,30 @@ class RobotBase:
 
         self.odom_pub.publish(odom)
     
-    
+ 
+
 def main():
+    global robotBase
     while not rospy.is_shutdown():
-        update_sensors()
-        rospy.sleep(0.1)
+        
+        rospy.spin()
 
 if __name__ == '__main__':
+    global robotBase
     rospy.init_node('robot_driver', anonymous=True)
     rospy.Rate(10)
     
 
     rospy.logdebug ('Program is starting ... ')
     
-    voltage_pub = rospy.Publisher('/battery_state', BatteryState, queue_size=10)
-    ultrasonic_pub = rospy.Publisher('/ultrasonic', Range, queue_size=10)
+    robotBase = RobotBase()
+    # voltage_pub = rospy.Publisher('/battery_state', BatteryState, queue_size=10)
+    # ultrasonic_pub = rospy.Publisher('/ultrasonic', Range, queue_size=10)
     
     
-    servo_sub_x = rospy.Subscriber('/servo/x', Int32, servo_x_callback)
-    servo_sub_y = rospy.Subscriber('/servo/y', Int32, servo_y_callback)
-    buzzer_sub = rospy.Subscriber('/buzzer', Bool, buzzer_callback)
+    # servo_sub_x = rospy.Subscriber('/servo/x', Int32, servo_x_callback)
+    # servo_sub_y = rospy.Subscriber('/servo/y', Int32, servo_y_callback)
+    # buzzer_sub = rospy.Subscriber('/buzzer', Bool, buzzer_callback)
    
     # led_sub = rospy.Subscriber('/led', ColorRGBA, led_callback)
     

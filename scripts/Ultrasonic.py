@@ -143,8 +143,7 @@ if __name__ == '__main__':
     print('\'/ultrasonic\' is initializing ... ')
     try:
         publisher()
-    except KeyboardInterrupt: 
-        PWM.setMotorModel(0, 0, 0, 0)
+    except KeyboardInterrupt:
         ultrasonic.pwm_S.setServoPwm('0', 90)
     except rospy.ROSInterruptException:
         pass
