@@ -71,8 +71,11 @@ class Adc:
     def i2cClose(self):
         self.bus.close()
 
+
+rate = None
+
 def loop():
-    global pub
+    global pub, rate
     adc=Adc()
     while True:
         voltage=adc.recvADC(2)*3
@@ -80,16 +83,17 @@ def loop():
         battery_state.header.stamp = rospy.Time.now()
         battery_state.voltage = voltage
         pub.publish(battery_state)
+        rate.sleep()
+
         
         
 def destroy():
     pass
 
-
 # Main program logic follows:
 if __name__ == '__main__':
     rospy.init_node('voltage_monitor', anonymous=True)
-    rospy.Rate(10)
+    rate = rospy.Rate(10)
     
     pub = rospy.Publisher('/battery_state', BatteryState, queue_size=10)
     

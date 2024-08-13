@@ -19,7 +19,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 ## System dependencies are found with CMake's conventions
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
-find_package(pigpiod_if2_LIBRARY REQUIRED)
+#find_package(pigpiod_if2_LIBRARY REQUIRED)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -111,7 +111,7 @@ catkin_package(
   INCLUDE_DIRS include include/firmware
 #  LIBRARIES pigpio
   CATKIN_DEPENDS roscpp rospy std_msgs geometry_msgs message_runtime 
-  DEPENDS pigpiod_if2_LIBRARY
+  #DEPENDS pigpiod_if2_LIBRARY
 )
 
 ###########
@@ -124,7 +124,7 @@ include_directories(
  include
  include/firmware
  ${catkin_INCLUDE_DIRS}
- ${pigpio_INCLUDE_DIR}
+ #${pigpio_INCLUDE_DIR}
 )
 
 ## Declare a C++ library
@@ -202,10 +202,10 @@ include_directories(
 set(Firmware "src/firmware/Encoder.cpp")
 
 
-target_link_libraries(rpi_car_driver ${catkin_LIBRARIES} pigpiod_if2_LIBRARY)
+#target_link_libraries(rpi_car_driver ${catkin_LIBRARIES} pigpiod_if2_LIBRARY)
 
-add_executable(rpi_car_driver src/firmware/main.cpp ${Firmware})
-target_link_libraries(rpi_car_driver ${catkin_LIBRARIES} ${pigpio_LIBRARY} ${pigpiod_if_LIBRARY} ${pigpiod_if2_LIBRARY})
+#add_executable(rpi_car_driver src/firmware/main.cpp ${Firmware})
+#target_link_libraries(rpi_car_driver ${catkin_LIBRARIES} ${pigpio_LIBRARY} ${pigpiod_if_LIBRARY} ${pigpiod_if2_LIBRARY})
 
 #############
 ## Testing ##
