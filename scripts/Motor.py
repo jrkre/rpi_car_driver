@@ -124,18 +124,14 @@ class Motor:
         back_right = (x - y + rot * WHEEL_GEOMETRY) / WHEEL_RADIUS
         
         # probably need some value scaling in here somewhere
+        rospy.logdebug("front_left", front_left)
 
-        self.pwm.setMotorModel(front_left, back_left, front_right, back_right)
-        
-
+        self.setMotorModel(front_left, back_left, front_right, back_right)
 
 
 PWM = None
 WHEEL_GEOMETRY = None
 WHEEL_RADIUS = None
-
-
-
 
 
 def destroy():
@@ -145,34 +141,24 @@ def cmd_vel_callback(msg):
     global PWM
     #do motor stuff
     print("motor_callback")
-    x = msg.linear.x
-    y = msg.linear.y
-    rot = msg.angular.z
-
-    front_left = (x - y - rot * WHEEL_GEOMETRY) / WHEEL_RADIUS
-    front_right = (x + y + rot * WHEEL_GEOMETRY) / WHEEL_RADIUS
-    back_left = (x + y - rot * WHEEL_GEOMETRY) / WHEEL_RADIUS
-    back_right = (x - y + rot * WHEEL_GEOMETRY) / WHEEL_RADIUS
     
-    PWM.setMotorModel(front_left, back_left, front_right, back_right)
+    PWM.twist(msg)
     
     
 
 def loop():
     global WHEEL_RADIUS, WHEEL_GEOMETRY, PWM
     rospy.init_node('motor_controller', anonymous=True)
-    rospy.Rate(10)
+    rate = rospy.Rate(10)
     
     PWM = Motor()
     
     WHEEL_GEOMETRY = (rospy.get_param('/robot/wheels/wheelbase/horizontal') + rospy.get_param('/robot/wheels/wheelbase/vertical')) / 2
     WHEEL_RADIUS = rospy.get_param('/robot/wheels/diameter') / 2
 
-    while True:
-        try:
-            cmd_vel_sub = rospy.Subscriber('/cmd_vel', Twist, cmd_vel_callback)
-        except KeyboardInterrupt:
-            print("\nEnd of program")
+    cmd_vel_sub = rospy.Subscriber('/cmd_vel', Twist, cmd_vel_callback)
+    
+    rospy.spin()
             
 
 if __name__ == '__main__':

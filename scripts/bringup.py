@@ -4,22 +4,34 @@ import rospy
 import time
 from std_msgs.msg import Int32, Bool, ColorRGBA
 from sensor_msgs.msg import Range, BatteryState
-import Servo, Buzzer, Led, Adc, Motor
+from Motor import Motor
+from Buzzer import Buzzer
+from Adc import Adc
+from Servo import Servo
+from Ultrasonic import Ultrasonic
 
 #subscibers
 cmd_vel_sub = None
-servo_sub_x = 
+servo_sub_x = None
+servo_sub_y = None
 
 #publishers
 v_pub = None
+range_pub = None
 
+#controllers
 motor_controller = None
 servo_controller = None
+ultrasonic_controller = None
+buzzer_controller = None
 
 
-def cmd_vel_calllback(msg):
+def cmd_vel_callback(msg):
     rospy.loginfo("cmd_vel_callback")
     motor_controller.twist(msg)
+
+def buzzer_callback(msg):
+    buzzer_controller.callback(msg)
     
     
 def voltage_check():
@@ -30,11 +42,19 @@ def voltage_check():
     v_pub.publish(msg)
 
 
+def range_check():
+    distance = ultrasonic_controller.get_distance()
+    msg = Range()
+    msg.header.stamp = rospy.Time.now()
+    msg.range = distance
+    range_pub.publish(msg)
+
     
 def loop():
     while not rospy.is_shutdown():
         voltage_check()
-        rospy.sleep(0.1)
+        range_check()
+        rospy.sleep(.1)
 
 if __name__ == '__main__':
     rospy.init_node('robot_driver', anonymous=True)
@@ -46,6 +66,8 @@ if __name__ == '__main__':
     motor_controller = Motor()
     servo_controller = Servo()
     voltage_controller = Adc()
+    ultrasonic_controller = Ultrasonic()
+    buzzer_controller = Buzzer()
     
     
     #init publishers
@@ -57,10 +79,8 @@ if __name__ == '__main__':
     #init subscribers
     cmd_vel_sub = rospy.Subscriber('/cmd_vel', Int32, cmd_vel_callback)
     
-    servo_sub_x = rospy.Subscriber('/servo/x', Int32, servo_x_callback)
-    servo_sub_y = rospy.Subscriber('/servo/y', Int32, servo_y_callback)
+    #servo_sub_x = rospy.Subscriber('/servo/x', Int32, servo_x_callback)
+    #servo_sub_y = rospy.Subscriber('/servo/y', Int32, servo_y_callback)
     buzzer_sub = rospy.Subscriber('/buzzer', Bool, buzzer_callback)
    
-    # led_sub = rospy.Subscriber('/led', ColorRGBA, led_callback)
-    
     loop()

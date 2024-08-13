@@ -19,13 +19,13 @@ class Buzzer:
         else:
             GPIO.output(Buzzer_Pin,False)
             
-def callback(msg):
-    global buzzer
-    if msg.data:
-        buzzer.run("1")
-    else:
-        buzzer.run("0")
-            
+    def callback(self, msg):
+        global buzzer
+        if msg.data:
+            buzzer.run("1")
+        else:
+            buzzer.run("0")
+
 if __name__=='__main__':
     rospy.init_node('buzzer_driver', anonymous=True)
     
@@ -36,5 +36,5 @@ if __name__=='__main__':
     GPIO.setup(Buzzer_Pin,GPIO.OUT)
     
     buzzer=Buzzer()
-    rospy.Subscriber('/buzzer', Bool, callback)
+    rospy.Subscriber('/buzzer', Bool, buzzer.callback)
     rospy.spin()

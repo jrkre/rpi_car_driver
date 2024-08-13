@@ -19,7 +19,7 @@ class RobotBase:
     linear_velocity_x, linear_velocity_y, angualar_velocity_z = 0, 0, 0
     delta_v_time = rospy.Time()
     vel_dt = 0
-    x_pos, y_pos = 0
+    x_pos, y_pos = 0, 0
     
     steering_angle = 0
     heading = 0
