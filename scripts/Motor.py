@@ -152,10 +152,13 @@ def cmd_vel_callback(msg):
 def loop():
     global WHEEL_RADIUS, WHEEL_GEOMETRY, PWM
     rospy.init_node('motor_controller', anonymous=True)
+    print('\'/cmd_vel\' is initializing ... ')
     rate = rospy.Rate(10)
     
     PWM = Motor()
     
+    
+
     cmd_vel_sub = rospy.Subscriber('/cmd_vel', Twist, cmd_vel_callback)
     
     rospy.spin()

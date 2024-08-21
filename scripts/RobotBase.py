@@ -47,11 +47,11 @@ class RobotBase:
         self.linear_velocity_y = msg.linear.y
         self.angualar_velocity_z = msg.angular.z
         
-        self.vel_dt = (current_time.secs - delta_v_time.secs)
-        print("vel_dt:" + vel_dt)
+        self.vel_dt = (current_time.secs - self.delta_v_time.secs)
+        print("vel_dt:" + self.vel_dt)
         self.delta_v_time = current_time
         
-        delta_heading = self.angualar_velocity_z * vel_dt
+        delta_heading = self.angualar_velocity_z * self.vel_dt
         
         delta_x = (self.linear_velocity_x * math.cos(self.heading) - self.linear_velocity_y * math.sin(self.heading)) * self.vel_dt
         delta_y = (self.linear_velocity_x * math.cos(self.heading) + self.linear_velocity_y * math.cos(self.heading)) * self.vel_dt
@@ -107,7 +107,7 @@ class RobotBase:
 
         self.odom_pub.publish(odom)
     
- 
+robotBase = None
 
 def main():
     global robotBase
@@ -118,6 +118,7 @@ def main():
 if __name__ == '__main__':
     global robotBase
     rospy.init_node('robot_driver', anonymous=True)
+    print('\'/robotbase\' is initializing ... ')
     rospy.Rate(10)
     
 
