@@ -94,6 +94,7 @@ def destroy():
 if __name__ == '__main__':
     rospy.init_node('voltage_monitor', anonymous=True)
     rate = rospy.Rate(10)
+    print('\'/battery_state\' is initializing ... ')
     
     pub = rospy.Publisher('/battery_state', BatteryState, queue_size=10)
     

@@ -120,7 +120,7 @@ class Ultrasonic:
     #             elif i == 90:
     #                 M = self.get_distance()
     #             else:
-    #                 R = self.get_distance()
+    #                 R = self.get_distance() 
     #             self.run_motor(L, M, R)
     
 

@@ -118,6 +118,7 @@ def main():
 if __name__ == '__main__':
     global robotBase
     rospy.init_node('robot_driver', anonymous=True)
+    print('\'/robotbase\' is initializing ... ')
     rospy.Rate(10)
     
 

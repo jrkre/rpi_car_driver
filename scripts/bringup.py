@@ -3,6 +3,7 @@
 import rospy
 import time
 from std_msgs.msg import Int32, Bool, ColorRGBA
+from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Range, BatteryState
 from Motor import Motor
 from Buzzer import Buzzer
@@ -77,7 +78,7 @@ if __name__ == '__main__':
     
     
     #init subscribers
-    cmd_vel_sub = rospy.Subscriber('/cmd_vel', Int32, cmd_vel_callback)
+    cmd_vel_sub = rospy.Subscriber('/cmd_vel', Twist, cmd_vel_callback)
     
     #servo_sub_x = rospy.Subscriber('/servo/x', Int32, servo_x_callback)
     #servo_sub_y = rospy.Subscriber('/servo/y', Int32, servo_y_callback)

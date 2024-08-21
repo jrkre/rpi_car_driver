@@ -18,6 +18,9 @@ class Motor:
         # change the value by experimenting.
         #self.adc = Adc()
 
+        self.WHEEL_GEOMETRY = (rospy.get_param('/robot/wheels/wheelbase/horizontal') + rospy.get_param('/robot/wheels/wheelbase/vertical')) / 2
+        self.WHEEL_RADIUS = rospy.get_param('/robot/wheels/diameter') / 2
+
     @staticmethod
     def duty_range(duty1, duty2, duty3, duty4):
         if duty1 > 4095:
@@ -118,13 +121,13 @@ class Motor:
         y = twist.linear.y
         rot = twist.angular.z
 
-        front_left = (x - y - rot * WHEEL_GEOMETRY) / WHEEL_RADIUS
-        front_right = (x + y + rot * WHEEL_GEOMETRY) / WHEEL_RADIUS
-        back_left = (x + y - rot * WHEEL_GEOMETRY) / WHEEL_RADIUS
-        back_right = (x - y + rot * WHEEL_GEOMETRY) / WHEEL_RADIUS
+        front_left = (x - y - rot * self.WHEEL_GEOMETRY) / self.WHEEL_RADIUS
+        front_right = (x + y + rot * self.WHEEL_GEOMETRY) / self.WHEEL_RADIUS
+        back_left = (x + y - rot * self.WHEEL_GEOMETRY) / self.WHEEL_RADIUS
+        back_right = (x - y + rot * self.WHEEL_GEOMETRY) / self.WHEEL_RADIUS
         
         # probably need some value scaling in here somewhere
-        rospy.logdebug("front_left", front_left)
+        #rospy.logdebug("front_left", front_left)
 
         self.setMotorModel(front_left, back_left, front_right, back_right)
 
@@ -149,12 +152,12 @@ def cmd_vel_callback(msg):
 def loop():
     global WHEEL_RADIUS, WHEEL_GEOMETRY, PWM
     rospy.init_node('motor_controller', anonymous=True)
+    print('\'/cmd_vel\' is initializing ... ')
     rate = rospy.Rate(10)
     
     PWM = Motor()
     
-    WHEEL_GEOMETRY = (rospy.get_param('/robot/wheels/wheelbase/horizontal') + rospy.get_param('/robot/wheels/wheelbase/vertical')) / 2
-    WHEEL_RADIUS = rospy.get_param('/robot/wheels/diameter') / 2
+    
 
     cmd_vel_sub = rospy.Subscriber('/cmd_vel', Twist, cmd_vel_callback)
     

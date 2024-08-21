@@ -52,6 +52,7 @@ def servo_y_callback(msg):
 # Main program logic follows:
 if __name__ == '__main__':
     rospy.init_node('servo_controller', anonymous=True)
+    print('\'/servo\' is initializing ... ')
     rospy.Rate(10)
     
     while True:
